@@ -1,0 +1,14 @@
+# Ignorar archivos de compilación
+build/
+*.exe
+*.dll
+*.obj
+*.pdb
+*.log
+*.cache
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+compile_commands.json
+.vscode/
