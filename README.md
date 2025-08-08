@@ -13,7 +13,7 @@ K1rtash Games: https://discord.gg/Tvcasfq7GB
 
 I made this proyect to learn the basics of game-making and distribution, as well as libraries like SDL-3 in C++ and how to use Git.
 
-In the game you can move the character with the A & D keys, it will also display a console window for logs.
+Features: you can move the character with the A & D keys, it will also display a console window for logs, the window is also resizable.
 
 
 
