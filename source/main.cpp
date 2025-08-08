@@ -135,7 +135,7 @@ bool initialize(SDLState &state)
 
 
     // Create window
-    state.window = SDL_CreateWindow("Window Demo", state.width, state.height, SDL_WINDOW_RESIZABLE);
+    state.window = SDL_CreateWindow("K1rtash Demo Window", state.width, state.height, SDL_WINDOW_RESIZABLE);
 
     if (!state.window) 
     { //Check if the window was created successfully
