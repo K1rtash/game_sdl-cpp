@@ -18,4 +18,4 @@ In the game you can move the character with the A & D keys, it will also display
 
 
 
-### To use the proyect, either compile from source with the CMake file, which is intended for VS Code, or download a release and use the installer. 
+### To use the proyect, either compile from source with the CMake file, which is intended for VS Code, or [download a release and use the installer](https://github.com/K1rtash/game_sdl-cpp/releases/tag/indev_0.1). 
