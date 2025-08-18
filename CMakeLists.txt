@@ -30,11 +30,6 @@ endif()
 
 
 
-# CONFIGURACION ANTIGUA
-
-# Archivos fuente
-#add_executable(${PROJECT_NAME} source/main.cpp)
-
 
 # Rutas de SDL3
 set(SDL3_INCLUDE "C:/DEV/SDL3/x64/include")
@@ -51,33 +46,36 @@ target_link_libraries(${PROJECT_NAME} SDL3)
 
 
 
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E echo "Copiando SDL3.dll..."
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "C:/Users/caton/Desktop/Programacion/C++/Proyectos/game_sdl/lib/SDL3/SDL3.dll"
-        $<TARGET_FILE_DIR:${PROJECT_NAME}>
-    VERBATIM)
-
-
-
-# --- SDL3_image ---
+# --- RUTAS ARCHIVOS POST-BUILD ---
 set(SDL3_IMAGE_INCLUDE "C:/DEV/SDL3_image/x64/include")
 set(SDL3_IMAGE_LIB "C:/DEV/SDL3_image/x64/lib")
 set(SDL3_IMAGE_BIN "C:/DEV/SDL3_image/x64/bin/SDL3_image.dll")
+set(SDL3_BIN "C:/DEV/SDL3/x64/bin/SDL3.dll")
 
+
+# --- INCLUDE (-I) ---
 target_include_directories(${PROJECT_NAME} PRIVATE ${SDL3_IMAGE_INCLUDE})
 target_link_directories(${PROJECT_NAME} PRIVATE ${SDL3_IMAGE_LIB})
 target_link_libraries(${PROJECT_NAME} SDL3_image)
 
-# Copiar SDL3_image.dll al directorio del .exe después de compilar
+
+# --- COPIAR AL DIRECTORIO BUILD TRAS HACER LA BUILD ---
+
+# SDL3_image.dll
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
         ${SDL3_IMAGE_BIN}
         $<TARGET_FILE_DIR:${PROJECT_NAME}>
 )
 
-# Copiar ASSETS al directorio .exe después de compilar
+# SDL3.dll
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${SDL3_BIN}
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>
+)
 
+# assets/
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         "${CMAKE_SOURCE_DIR}/assets"
