@@ -1,6 +1,6 @@
 # C++ SDL-3 Demo proyect by K1rtash 
 
-![Icon](assets/git_icon.png)
+![Icon](third-party/github/icon0.png)
 
 Discord: k1rtash__
 
@@ -18,4 +18,4 @@ Features: you can move the character with the A & D keys, it will also display a
 
 
 
-### To use the proyect, either compile from source with the CMake file, which is intended for VS Code, or [download a release and use the installer](https://github.com/K1rtash/game_sdl-cpp/releases/tag/indev_0.1). 
+### To use the proyect, either compile from source with the CMake file, which is intended for VS Code, or [download a release and use the installer](https://github.com/K1rtash/game_sdl-cpp/releases/tag/indev). 
