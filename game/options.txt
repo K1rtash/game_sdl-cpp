@@ -1,0 +1,3 @@
+# Configuración del juego
+res_width=780
+res_heigth=320

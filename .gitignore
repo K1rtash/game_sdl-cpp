@@ -1,5 +1,6 @@
 # Ignorar archivos de compilación
 build/
+old/
 *.exe
 *.dll
 *.obj

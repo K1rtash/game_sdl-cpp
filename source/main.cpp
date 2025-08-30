@@ -1,7 +1,12 @@
 #include <iostream>
+#include <ctime>
+
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 #include <SDL3_image/SDL_image.h>
+
+#include "../lib/logger.h"
+#include "../lib/config.h"
 
 using std::cout,std::cin,std::endl,std::string;
 
@@ -19,8 +24,20 @@ void cleanup(SDLState &state);
 int main(int argc, char* argv[]) 
 {
     //Custom
-    string ctitle = "[SDL3 WINDOW DEMO] ";
-    cout << ctitle << "Hello world!" << endl;
+    /*string ctitle = "[SDL3 WINDOW DEMO] ";
+    cout << ctitle << "Hello world!" << endl;*/
+
+    ConfigLoader config("options.txt");
+    Logger gameLog("latest.log", Logger::INFO);
+    
+    gameLog.info("Attempting to boot up the game");
+
+    
+    // Cambiar nivel para ver debug
+    if(0 == 1){
+    gameLog.setNivel(Logger::DEBUG);
+    gameLog.debug("DEBUG logging is now enabled");
+    }
 
 
     // Initialize SDL
@@ -30,13 +47,20 @@ int main(int argc, char* argv[])
     state.logW = 640;
     state.logH = 320;
 
-    if (!initialize(state)) 
-    {
+    if(state.width < 1 || state.height < 1){
+        gameLog.error("Invalid window height or width, setting to default");
+        state.width = 1600;
+        state.height = 900;
+    }
+
+    if (!initialize(state)){
+        gameLog.critical("Failed to initialize SDL3");
         return 1;
     }
 
 
     // load game assets
+    gameLog.info("Loading asset: idle.png");
     SDL_Texture *idleTex = IMG_LoadTexture(state.renderer, "assets/idle.png");
     SDL_SetTextureScaleMode(idleTex, SDL_SCALEMODE_NEAREST);
 
@@ -62,7 +86,7 @@ int main(int argc, char* argv[])
             {
                 case SDL_EVENT_QUIT:
                 {
-                    cout << ctitle << "Quit event received." << endl;
+                    gameLog.info("Quit event received");
                     running = false;
                     break;
                 }
@@ -88,9 +112,7 @@ int main(int argc, char* argv[])
         }
         playerX += moveAmount * deltaTime;
 
-        //DEBUG
-        //cout << ctitle << "deltaTime = " << deltaTime << ", prevTime = " << prevTime << " nowTime = " << nowTime << endl;
-        //cout << flipHorizontal << endl;
+
 
         // drawing commands
         SDL_SetRenderDrawColor(state.renderer, 20, 10, 30, 255);
@@ -119,10 +141,14 @@ int main(int argc, char* argv[])
     }
 
     //Program end
+    gameLog.info("Destroying render thread");
     SDL_DestroyTexture(idleTex);
     cleanup(state);
+    gameLog.info("Closing the game");
     return 0;
 }
+
+
 
 bool initialize(SDLState &state) 
 {
@@ -142,6 +168,7 @@ bool initialize(SDLState &state)
         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "Error creating window", nullptr);
         cleanup(state);
         initSuccess = false;
+        
     }
 
     // Create renderer

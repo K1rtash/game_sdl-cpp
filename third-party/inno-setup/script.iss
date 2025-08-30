@@ -8,13 +8,13 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{F7859D9A-D6D3-43FB-85CF-03BCF1A883AB}
 AppName=K1rtash Game Demo
-AppVersion=1.1
+AppVersion=1.0
 ;AppVerName=K1rtash Game Demo 1.1
 AppPublisher=K1rtash Games
 AppPublisherURL=https://github.com/K1rtash
 AppSupportURL=https://github.com/K1rtash
 AppUpdatesURL=https://github.com/K1rtash
-DefaultDirName={autopf}\K1rtash Game Demo
+DefaultDirName={localappdata}\K1rtash Games\Game Demo
 UninstallDisplayIcon={app}\game_sdl-cpp.exe
 ; "ArchitecturesAllowed=x64compatible" specifies that Setup cannot run
 ; on anything but x64 and Windows 11 on Arm.
@@ -30,7 +30,7 @@ LicenseFile={#proyect_dir}\LICENSE
 ; Remove the following line to run in administrative install mode (install for all users).
 PrivilegesRequired=lowest
 OutputDir={#proyect_dir}\dist
-OutputBaseFilename=K1rtash Setup Wizzard
+OutputBaseFilename=k1rtash-game-demo_setup
 SetupIconFile={#proyect_dir}\assets\installer.ico
 SolidCompression=yes
 WizardStyle=modern
@@ -44,8 +44,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 [Files]
 Source: "{#proyect_dir}\build\game_sdl.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#proyect_dir}\build\assets\*"; DestDir: "{app}\assets"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "{#proyect_dir}\build\SDL3.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#proyect_dir}\build\SDL3_image.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#proyect_dir}\build\*.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Registry]
