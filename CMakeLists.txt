@@ -48,6 +48,9 @@ target_include_directories(${PROJECT_NAME} PRIVATE ${SDL3_IMAGE_INCLUDE}) # Equi
 target_link_directories(${PROJECT_NAME} PRIVATE ${SDL3_IMAGE_LIB}) # Equivale a -L 
 target_link_libraries(${PROJECT_NAME} SDL3_image)
 
+# GLM
+target_include_directories(${PROJECT_NAME} PRIVATE "third-party/")
+
 
 # --- EJECUTAR SCRIPT DE EMPAQUETADO ---
 set(PACKAGE_SCRIPT "${CMAKE_SOURCE_DIR}/game/package.ps1")

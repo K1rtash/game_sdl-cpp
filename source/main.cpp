@@ -1,5 +1,6 @@
 #include <iostream>
 #include <ctime>
+#include <vector>
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
@@ -7,12 +8,12 @@
 
 #include "../lib/logger.h"
 #include "../lib/config.h"
+#include "../lib/animation.h"
 
 using std::cout,std::cin,std::endl,std::string;
 
 
-struct SDLState
-{
+struct SDLState{
     SDL_Window *window;
     SDL_Renderer *renderer;
     int width, height, logW, logH;
@@ -21,11 +22,41 @@ struct SDLState
 bool initialize(SDLState &state);
 void cleanup(SDLState &state);
 
+
+struct Resources{
+    const int ANIM_PLAYER_IDLE = 0;
+
+    std::vector<Animation> playerAnims;
+    std::vector<SDL_Texture *> textures;
+    
+    SDL_Texture * texIdle;
+    SDL_Texture *loadTexture(SDL_Renderer *renderer, const std::string &filepath){
+
+        SDL_Texture *tex = IMG_LoadTexture(renderer, filepath.c_str());
+        SDL_SetTextureScaleMode(tex, SDL_SCALEMODE_NEAREST);
+        textures.push_back(tex);
+        return tex;
+    }
+
+    void load(SDLState &state){
+
+        playerAnims.resize(5);
+        playerAnims[ANIM_PLAYER_IDLE] = Animation(8, 1.6f);
+        texIdle = loadTexture(state.renderer, "assets/idle.png");
+    }
+
+    void unload(){
+        for(SDL_Texture *tex : textures){
+            SDL_DestroyTexture(tex);
+        }
+    }
+};
+
+
 int main(int argc, char* argv[]) 
 {
     //Custom
-    /*string ctitle = "[SDL3 WINDOW DEMO] ";
-    cout << ctitle << "Hello world!" << endl;*/
+
 
     ConfigLoader config("options.txt");
     Logger gameLog("latest.log", Logger::INFO);
@@ -58,11 +89,10 @@ int main(int argc, char* argv[])
         return 1;
     }
 
+    //load game assets
+    Resources res;
+    res.load(state);
 
-    // load game assets
-    gameLog.info("Loading asset: idle.png");
-    SDL_Texture *idleTex = IMG_LoadTexture(state.renderer, "assets/idle.png");
-    SDL_SetTextureScaleMode(idleTex, SDL_SCALEMODE_NEAREST);
 
 
     // setup game data
@@ -133,7 +163,7 @@ int main(int argc, char* argv[])
             .h = spriteSize,
         };
 
-        SDL_RenderTextureRotated(state.renderer, idleTex, &src, &dst, 0, nullptr, (flipHorizontal ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE));
+        SDL_RenderTextureRotated(state.renderer, res.texIdle, &src, &dst, 0, nullptr, (flipHorizontal ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE));
 
         // swap buffers
         SDL_RenderPresent(state.renderer);
@@ -142,7 +172,7 @@ int main(int argc, char* argv[])
 
     //Program end
     gameLog.info("Destroying render thread");
-    SDL_DestroyTexture(idleTex);
+    res.unload();
     cleanup(state);
     gameLog.info("Closing the game");
     return 0;
